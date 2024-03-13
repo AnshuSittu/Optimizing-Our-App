@@ -2,6 +2,7 @@ import RestaurantCard from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../../utils/useOnlineStatus";
 
 const Body = () => {
   //Local state Variable
@@ -37,6 +38,16 @@ const Body = () => {
       json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
   };
+
+  // Online Status Hook Integrated here
+
+  const onlineStatus = useOnlineStatus();
+
+  if (onlineStatus === false)
+
+   return (
+   <h1>Please Check Your Internet ❌ Its Not Working ❗ </h1>
+   );
 
   return ListOfRestaurant.length === 0 ? (
     <Shimmer />
@@ -85,9 +96,10 @@ const Body = () => {
       </div>
       <div className="res-container">
         {filteredRestaurant.map((restaurant) => (
-          <Link 
+          <Link
             key={restaurant.info.id}
-            to={"/restaurant/" + restaurant.info.id} style={{ textDecoration: 'none', color: 'black' }}
+            to={"/restaurant/" + restaurant.info.id}
+            style={{ textDecoration: "none", color: "black" }}
           >
             <RestaurantCard resData={restaurant} />
           </Link>
